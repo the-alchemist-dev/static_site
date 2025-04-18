@@ -15,3 +15,9 @@ class HTMLNode():
         for item in self.props.items():
             attr_strings.append(f'{item[0]}="{item[1]}"')
         return " ".join(attr_strings)
+
+    def __repr__(self):
+        #print(self.tag)
+        #print(self.value)
+        #print(self.children)
+        #print(self.props)
