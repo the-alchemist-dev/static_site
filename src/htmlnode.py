@@ -11,13 +11,12 @@ class HTMLNode():
         raise NotImplementedError("Implementation in subclass")
 
     def props_to_html(self):
-        attr_strings = []
-        for item in self.props.items():
-            attr_strings.append(f'{item[0]}="{item[1]}"')
-        return " ".join(attr_strings)
+        if self.props != None:
+            attr_strings = []
+            for item in self.props.items():
+                attr_strings.append(f'{item[0]}="{item[1]}"')
+            return " " + " ".join(attr_strings)
+        return ""
 
     def __repr__(self):
-        #print(self.tag)
-        #print(self.value)
-        #print(self.children)
-        #print(self.props)
+        return f"HTMLNode({self.tag}, {self.value}, {self.children}, {self.props})"
