@@ -36,3 +36,23 @@ class LeafNode(HTMLNode):
 
     def __repr__(self):
         return f"LeafNode({self.tag}, {self.value}, {self.children}, {self.props})"
+
+class ParentNode(HTMLNode):
+    def __init__(self, tag, value, children, props=None):
+        super().__init__(tag, value, children, props=props)
+
+    def to_html(self):
+        if tag == None:
+            raise ValueError("tag value cannot be None")
+        if children == None:
+            raise ValueError("children value cannot be None")
+
+        #make recursive iterator here to parse parent node and its children
+
+
+
+
+
+
+
+
