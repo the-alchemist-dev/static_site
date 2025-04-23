@@ -24,6 +24,10 @@ class TestTextNode(unittest.TestCase):
         node2 = TextNode("This is some text", TextType.ITALIC, "https://www.boot.com")
         assert node != node2
 
+    def test_repr(self):
+        node = TextNode("Testing the print func", TextType.BOLD, None)
+        assert node.__repr__() == 'TextNode(Testing the print func, TextType.BOLD, None)'
+
 
 if __name__ == "__main__":
     unittest.main()
