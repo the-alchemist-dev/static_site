@@ -11,7 +11,7 @@ class TextType(Enum):
 
 
 class TextNode():
-    def __init__(self, text, text_type, url=None):
+    def __init__(self, text, text_type=TextType.NORMAL, url=None):
         self.text = text
         self.text_type = text_type
         self.url = url
@@ -30,18 +30,20 @@ class TextNode():
 
 
 def text_node_to_html_node(text_node):
+    if text_node.text == None:
+        raise Exception("Text value cannot be None")
     match text_node.text_type:
-        case "text":
+        case TextType.NORMAL:
             return LeafNode(None, text_node.text)
-        case "bold":
+        case TextType.BOLD:
             return LeafNode("b", text_node.text)
-        case "italic":
+        case TextType.ITALIC:
             return LeafNode("i", text_node.text)
-        case "code":
+        case TextType.CODE:
             return LeafNode("code", text_node.text)
-        case "link":
+        case TextType.LINK:
             return LeafNode("a", text_node.text, {"href": text_node.url})
-        case "image":
+        case TextType.IMAGE:
             return LeafNode("img", "", {"src": text_node.url, "alt": text_node.text})
         case _:
             raise Exception("invalid text type")

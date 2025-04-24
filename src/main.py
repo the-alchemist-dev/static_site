@@ -7,7 +7,7 @@ from htmlnode import ParentNode
 
 def main():
     print("\n\nBasic test for TextNode\n")
-    example_text = TextNode("This is anchor text", "link", "https://www.boot.dev")
+    example_text = TextNode("This is anchor text", TextType.LINK, "https://www.boot.dev")
     print(example_text, "\n\n")
 
     print("Basic test for converting TextNode to (new) LeafNode\n")
