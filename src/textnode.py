@@ -1,8 +1,10 @@
+#!/usr/bin/python3
+
 from enum import Enum
 from htmlnode import LeafNode
 
 class TextType(Enum):
-    NORMAL = "text"
+    TEXT = "text"
     BOLD = "bold"
     ITALIC = "italic"
     CODE = "code"
@@ -11,7 +13,7 @@ class TextType(Enum):
 
 
 class TextNode():
-    def __init__(self, text, text_type=TextType.NORMAL, url=None):
+    def __init__(self, text, text_type=TextType.TEXT, url=None):
         self.text = text
         self.text_type = text_type
         self.url = url
@@ -33,7 +35,7 @@ def text_node_to_html_node(text_node):
     if text_node.text == None:
         raise Exception("Text value cannot be None")
     match text_node.text_type:
-        case TextType.NORMAL:
+        case TextType.TEXT:
             return LeafNode(None, text_node.text)
         case TextType.BOLD:
             return LeafNode("b", text_node.text)
