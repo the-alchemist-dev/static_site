@@ -15,8 +15,8 @@ class TestTextNode(unittest.TestCase):
         assert node != node2
 
     def test_url_not_none(self):
-        node = TextNode("This is some text", TextType.NORMAL, "https://www.boot.dev")
-        node2 = TextNode("This is some text", TextType.NORMAL, "https://www.boot.dev")
+        node = TextNode("This is some text", TextType.TEXT, "https://www.boot.dev")
+        node2 = TextNode("This is some text", TextType.TEXT, "https://www.boot.dev")
         assert node == node2
         
     def test_url_not_eq(self):
@@ -35,7 +35,7 @@ class TestTextNode(unittest.TestCase):
         assert html_node.value == "This should be raw text"
 
     def test_node_conversion_normal(self):
-        text_node = TextNode("This should be raw text", TextType.NORMAL)
+        text_node = TextNode("This should be raw text", TextType.TEXT)
         html_node = text_node_to_html_node(text_node)
         assert html_node.tag == None
         assert html_node.value == "This should be raw text"
