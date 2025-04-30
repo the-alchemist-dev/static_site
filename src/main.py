@@ -1,9 +1,11 @@
 #!/usr/bin/python3
 
-from textnode import TextNode, text_node_to_html_node
+from textnode import TextNode, TextType, text_node_to_html_node
 from htmlnode import HTMLNode
 from htmlnode import LeafNode
 from htmlnode import ParentNode
+from splitnodes import split_nodes_delimiter
+
 
 def main():
     print("\n\nBasic test for TextNode\n")
@@ -36,5 +38,14 @@ def main():
     )
     print(example_parent)
     print(example_parent.to_html(), "\n\n")
+
+    print("Basic test for splitting list of TextNodes that contain one other specified node type")
+    example_nodes = [
+        TextNode("Some of this text has _italic_ styling", TextType.TEXT, None),
+        TextNode("This is more text with _italics_ in it", TextType.TEXT, None)
+    ]
+    split_nodes = split_nodes_delimiter(example_nodes, "_", TextType.ITALIC)
+    for node in split_nodes:
+        print(node)
 
 main()
