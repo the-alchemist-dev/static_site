@@ -2,7 +2,7 @@
 
 import unittest
 from textnode import TextNode, TextType
-from splitnodes import split_nodes_delimiter
+from extractnodes import split_nodes_delimiter
 
 class TestSplitNodes(unittest.TestCase):
 

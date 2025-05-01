@@ -4,7 +4,7 @@ from textnode import TextNode, TextType, text_node_to_html_node
 from htmlnode import HTMLNode
 from htmlnode import LeafNode
 from htmlnode import ParentNode
-from splitnodes import split_nodes_delimiter
+from extractnodes import split_nodes_delimiter
 
 
 def main():
