@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 
 from textnode import TextNode, TextType
-
+import re
 
 def split_nodes_delimiter(old_nodes, delimiter, text_type):
     valid_delimiters = ["**", "`", "_"]
@@ -17,7 +17,7 @@ def split_nodes_delimiter(old_nodes, delimiter, text_type):
         elif delimiter in node.text:
             split_text = node.text.split(delimiter)
             if len(split_text) % 2 == 0:
-                raise Exception("Invalid markdown syntax: matching delimiters required")
+                raise ValueError("Invalid markdown syntax: must have opening and closing flags")
             for index, text_item in enumerate(split_text):
                 if text_item != "":
                     if index % 2 == 0:
@@ -25,3 +25,13 @@ def split_nodes_delimiter(old_nodes, delimiter, text_type):
                     else:
                         new_nodes.append(TextNode(text_item, text_type))
     return new_nodes
+
+def extract_markdown_images(text):
+    #regex: r"!\[([^\[\]]*)\]\(([^\(\)]*)\)"
+    images = re.findall(r"!\[([^\[\]]*)\]\(([^\(\)]*)\)", text)
+    
+
+def extract_markdown_links(text):
+    #regex: r"(?<!!)\[([^\[\]]*)\]\(([^\(\)]*)\)"
+    links = re.findall(r"(?<!!)\[([^\[\]]*)\]\(([^\(\)]*)\)", text)
+    
