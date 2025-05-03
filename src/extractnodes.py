@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 
-from textnode import TextNode, TextType
 import re
+from textnode import TextNode, TextType
 
 def split_nodes_delimiter(old_nodes, delimiter, text_type):
     valid_delimiters = ["**", "`", "_"]
@@ -27,11 +27,9 @@ def split_nodes_delimiter(old_nodes, delimiter, text_type):
     return new_nodes
 
 def extract_markdown_images(text):
-    #regex: r"!\[([^\[\]]*)\]\(([^\(\)]*)\)"
     images = re.findall(r"!\[([^\[\]]*)\]\(([^\(\)]*)\)", text)
+    return images
     
-
 def extract_markdown_links(text):
-    #regex: r"(?<!!)\[([^\[\]]*)\]\(([^\(\)]*)\)"
     links = re.findall(r"(?<!!)\[([^\[\]]*)\]\(([^\(\)]*)\)", text)
-    
+    return links

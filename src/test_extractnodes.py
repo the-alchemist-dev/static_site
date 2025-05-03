@@ -2,7 +2,7 @@
 
 import unittest
 from textnode import TextNode, TextType
-from extractnodes import split_nodes_delimiter
+from extractnodes import split_nodes_delimiter, extract_markdown_images, extract_markdown_links
 
 class TestSplitNodes(unittest.TestCase):
 
@@ -183,3 +183,29 @@ class TestSplitNodes(unittest.TestCase):
             assert True
         except Exception as e:
             assert False, f"split_nodes_delimiter() raise {type(e).__name__} instead of ValueError"
+
+    def test_extract_markdown_images(self):
+        text = "This is text with a ![rick roll](https://i.imgur.com/aKaOqIh.gif) and ![obi wan](https://i.imgur.com/fJRm4Vk.jpeg)"
+        assert extract_markdown_images(text) == [("rick roll", "https://i.imgur.com/aKaOqIh.gif"), ("obi wan", "https://i.imgur.com/fJRm4Vk.jpeg")]
+
+    def test_extract_markdown_images_none_present(self):
+        text = "This is text with a rick roll and obi wan"
+        assert extract_markdown_images(text) == []
+
+    def test_extract_markdown_images_bad_syntax(self):
+        #bad syntax shouldn't cause errors, the pattern just won't match
+        text = "This is text with a !rick roll](https://i.imgur.com/aKaOqIh.gif) and ![obi wanhttps://i.imgur.com/fJRm4Vk.jpeg)"
+        assert extract_markdown_images(text) == []
+
+    def test_extract_markdown_links(self):
+        text = "This is text with a link [to boot dev](https://www.boot.dev) and [to youtube](https://www.youtube.com/@bootdotdev)"
+        assert extract_markdown_links(text) == [("to boot dev", "https://www.boot.dev"), ("to youtube", "https://www.youtube.com/@bootdotdev")]
+
+    def test_extract_markdown_links_none_present(self):
+        text = "This is text with a link to boot dev and to youtube"
+        assert extract_markdown_links(text) == []
+
+    def test_extract_markdown_lists_bad_syntax(self):
+        #bad syntax shouldn't cause errors, the pattern just won't match
+        text = text = "This is text with a link to boot dev](https://www.boot.dev and [to youtubehttps://www.youtube.com/@bootdotdev)"
+        assert extract_markdown_links(text) == []

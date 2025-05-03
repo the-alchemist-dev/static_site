@@ -4,7 +4,7 @@ from textnode import TextNode, TextType, text_node_to_html_node
 from htmlnode import HTMLNode
 from htmlnode import LeafNode
 from htmlnode import ParentNode
-from extractnodes import split_nodes_delimiter
+from extractnodes import split_nodes_delimiter, extract_markdown_images, extract_markdown_links
 
 
 def main():
@@ -39,7 +39,7 @@ def main():
     print(example_parent)
     print(example_parent.to_html(), "\n\n")
 
-    print("Basic test for splitting list of TextNodes that contain one other specified node type")
+    print("Basic test for splitting list of TextNodes that contain one other specified node type\n")
     example_nodes = [
         TextNode("Some of this text has _italic_ styling", TextType.TEXT, None),
         TextNode("This is more text with _italics_ in it", TextType.TEXT, None)
@@ -47,5 +47,12 @@ def main():
     split_nodes = split_nodes_delimiter(example_nodes, "_", TextType.ITALIC)
     for node in split_nodes:
         print(node)
+    print("\n")
+
+    print("Basic test for extracting images and links from markdown\n")
+    image_text = "This is text with a ![rick roll](https://i.imgur.com/aKaOqIh.gif) and ![obi wan](https://i.imgur.com/fJRm4Vk.jpeg)"
+    link_text = "This is text with a link [to boot dev](https://www.boot.dev) and [to youtube](https://www.youtube.com/@bootdotdev)"
+    print(extract_markdown_images(image_text))
+    print(extract_markdown_links(link_text))
 
 main()
