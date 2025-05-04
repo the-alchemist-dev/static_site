@@ -33,20 +33,33 @@ def split_nodes_images(old_nodes, text_type):
     new_nodes = []
     for node in old_nodes:
         if node.text_type != TextType.IMAGE:
-            images = extract_markdown_images(node)
+            images = extract_markdown_images(node.text)
             if images != []:
+                working_text = node.text
                 for image in images:
-                    sections = node.text.split(f"![{image_alt}]({image_link})", 1)
-                    if sections[0] != "":
-                        new_nodes.append(TextNode(sections[0], TextType.TEXT))
+                    image_alt = image[0]
+                    image_src = image[1]
+                    sections = working_text.split(f"![{image_alt}]({image_src})", 1)
+                    left_split = sections[0]
+                    right_split = sections[1]
+                    if left_split != "":
+                        new_nodes.append(TextNode(left_split, TextType.TEXT))
+                        new_nodes.append(TextNode(image_alt, TextType.IMAGE, image_src))
+                        working_text = right_split
+                    elif right_split != "":
+                        new_nodes.append(TextNode(image_alt, TextType.IMAGE, image_src))
+                        working_text = right_split
+                    else:
+                        new_nodes.append(TextNode(image_alt, TextType.IMAGE, image_src))
             else:
-                new_nodes.append(node)
+                new_nodes.append(TextNode(node.text, TextType.TEXT))
         else:
             new_nodes.append(node)
     return new_nodes
 
 def split_nodes_links(old_nodes, text_type):
-    valid_text_types = [TextType.LINK]
+    #valid_text_types = [TextType.LINK]
+    pass
 
 def extract_markdown_images(text):
     images = re.findall(r"!\[([^\[\]]*)\]\(([^\(\)]*)\)", text)
