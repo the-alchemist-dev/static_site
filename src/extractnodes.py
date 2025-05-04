@@ -26,6 +26,28 @@ def split_nodes_delimiter(old_nodes, delimiter, text_type):
                         new_nodes.append(TextNode(text_item, text_type))
     return new_nodes
 
+def split_nodes_images(old_nodes, text_type):
+    valid_text_types = [TextType.IMAGE]
+    if text_type not in valid_text_types:
+        raise ValueError(f"Invalid text_type value, must be {valid_text_types}")
+    new_nodes = []
+    for node in old_nodes:
+        if node.text_type != TextType.IMAGE:
+            images = extract_markdown_images(node)
+            if images != []:
+                for image in images:
+                    sections = node.text.split(f"![{image_alt}]({image_link})", 1)
+                    if sections[0] != "":
+                        new_nodes.append(TextNode(sections[0], TextType.TEXT))
+            else:
+                new_nodes.append(node)
+        else:
+            new_nodes.append(node)
+    return new_nodes
+
+def split_nodes_links(old_nodes, text_type):
+    valid_text_types = [TextType.LINK]
+
 def extract_markdown_images(text):
     images = re.findall(r"!\[([^\[\]]*)\]\(([^\(\)]*)\)", text)
     return images
