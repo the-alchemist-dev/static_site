@@ -56,14 +56,14 @@ def main():
     print(extract_markdown_links(link_text), "\n\n")
 
     print("Basic test for splitting nodes containing images\n")
-    image_node = TextNode("This is text with a ![rick roll](https://i.imgur.com/aKaOqIh.gif) and ![obi wan](https://i.imgur.com/fJRm4Vk.jpeg)", TextType.TEXT)
+    image_node = TextNode("This is text with a ![rick roll](https://i.imgur.com/aKaOqIh.gif) and ![obi wan](https://i.imgur.com/fJRm4Vk.jpeg) and more", TextType.TEXT)
     split_nodes = split_nodes_images([image_node], TextType.IMAGE)
     for node in split_nodes:
         print(node)
     print("\n\n")
 
     print("Basic test for splitting nodes containing links\n")
-    link_node = TextNode("This is text with a link [to boot dev](https://www.boot.dev) and [to youtube](https://www.youtube.com/@bootdotdev)", TextType.TEXT)
+    link_node = TextNode("This is text with a link [to boot dev](https://www.boot.dev) and [to youtube](https://www.youtube.com/@bootdotdev) and more", TextType.TEXT)
     split_nodes = split_nodes_links([link_node], TextType.LINK)
     for node in split_nodes:
         print(node)

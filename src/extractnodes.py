@@ -42,13 +42,21 @@ def split_nodes_images(old_nodes, text_type):
                     sections = working_text.split(f"![{image_alt}]({image_src})", 1)
                     left_split = sections[0]
                     right_split = sections[1]
-                    if left_split != "":
+                    if left_split != "" and right_split != "":
                         new_nodes.append(TextNode(left_split, TextType.TEXT))
                         new_nodes.append(TextNode(image_alt, TextType.IMAGE, image_src))
-                        working_text = right_split
-                    elif right_split != "":
+                        image_check = extract_markdown_links(right_split)
+                        if image_check == []:
+                            new_nodes.append(TextNode(right_split, TextType.TEXT))
+                        else:
+                            working_text = right_split
+                    elif left_split == "" and right_split != "":
                         new_nodes.append(TextNode(image_alt, TextType.IMAGE, image_src))
-                        working_text = right_split
+                        image_check = extract_markdown_links(right_split)
+                        if image_check == []:
+                            new_nodes.append(TextNode(right_split, TextType.TEXT))
+                        else:
+                            working_text = right_split
                     else:
                         new_nodes.append(TextNode(image_alt, TextType.IMAGE, image_src))
             else:
@@ -73,13 +81,21 @@ def split_nodes_links(old_nodes, text_type):
                     sections = working_text.split(f"[{link_text}]({link_url})", 1)
                     left_split = sections[0]
                     right_split = sections[1]
-                    if left_split != "":
+                    if left_split != "" and right_split != "":
                         new_nodes.append(TextNode(left_split, TextType.TEXT))
                         new_nodes.append(TextNode(link_text, TextType.LINK, link_url))
-                        working_text = right_split
-                    elif right_split != "":
+                        link_check = extract_markdown_links(right_split)
+                        if link_check == []:
+                            new_nodes.append(TextNode(right_split, TextType.TEXT))
+                        else:
+                            working_text = right_split
+                    elif left_split == "" and right_split != "":
                         new_nodes.append(TextNode(link_text, TextType.LINK, link_url))
-                        working_text = right_split
+                        link_check = extract_markdown_links(right_split)
+                        if link_check == []:
+                            new_nodes.append(TextNode(right_split, TextType.TEXT))
+                        else:
+                            working_text = right_split
                     else:
                         new_nodes.append(TextNode(link_text, TextType.LINK, link_url))
             else:
