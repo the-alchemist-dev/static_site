@@ -58,8 +58,35 @@ def split_nodes_images(old_nodes, text_type):
     return new_nodes
 
 def split_nodes_links(old_nodes, text_type):
-    #valid_text_types = [TextType.LINK]
-    pass
+    valid_text_types = [TextType.LINK]
+    if text_type not in valid_text_types:
+        raise ValueError(f"Invalid text_type value, must be {valid_text_types}")
+    new_nodes = []
+    for node in old_nodes:
+        if node.text_type != TextType.LINK:
+            links = extract_markdown_links(node.text)
+            if links != []:
+                working_text = node.text
+                for link in links:
+                    link_text = link[0]
+                    link_url = link[1]
+                    sections = working_text.split(f"[{link_text}]({link_url})", 1)
+                    left_split = sections[0]
+                    right_split = sections[1]
+                    if left_split != "":
+                        new_nodes.append(TextNode(left_split, TextType.TEXT))
+                        new_nodes.append(TextNode(link_text, TextType.LINK, link_url))
+                        working_text = right_split
+                    elif right_split != "":
+                        new_nodes.append(TextNode(link_text, TextType.LINK, link_url))
+                        working_text = right_split
+                    else:
+                        new_nodes.append(TextNode(link_text, TextType.LINK, link_url))
+            else:
+                new_nodes.append(TextNode(node.text, TextType.TEXT))
+        else:
+            new_nodes.append(node)
+    return new_nodes
 
 def extract_markdown_images(text):
     images = re.findall(r"!\[([^\[\]]*)\]\(([^\(\)]*)\)", text)

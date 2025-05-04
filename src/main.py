@@ -62,11 +62,11 @@ def main():
         print(node)
     print("\n\n")
 
-    #print("Basic test for splitting nodes containing links\n")
-    #link_node = TextNode("This is text with a link [to boot dev](https://www.boot.dev) and [to youtube](https://www.youtube.com/@bootdotdev)", TextType.TEXT)
-    #split_nodes = split_nodes_links([link_node], TextType.LINK)
-    #for node in split_nodes:
-        #print(node)
-    #print("\n\n")
+    print("Basic test for splitting nodes containing links\n")
+    link_node = TextNode("This is text with a link [to boot dev](https://www.boot.dev) and [to youtube](https://www.youtube.com/@bootdotdev)", TextType.TEXT)
+    split_nodes = split_nodes_links([link_node], TextType.LINK)
+    for node in split_nodes:
+        print(node)
+    print("\n\n")
 
 main()
