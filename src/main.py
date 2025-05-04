@@ -1,10 +1,10 @@
 #!/usr/bin/python3
 
-from textnode import TextNode, TextType, text_node_to_html_node
+from textnode import *
 from htmlnode import HTMLNode
 from htmlnode import LeafNode
 from htmlnode import ParentNode
-from extractnodes import split_nodes_delimiter, extract_markdown_images, extract_markdown_links
+from extractnodes import *
 
 
 def main():
@@ -47,12 +47,26 @@ def main():
     split_nodes = split_nodes_delimiter(example_nodes, "_", TextType.ITALIC)
     for node in split_nodes:
         print(node)
-    print("\n")
+    print("\n\n")
 
     print("Basic test for extracting images and links from markdown\n")
     image_text = "This is text with a ![rick roll](https://i.imgur.com/aKaOqIh.gif) and ![obi wan](https://i.imgur.com/fJRm4Vk.jpeg)"
     link_text = "This is text with a link [to boot dev](https://www.boot.dev) and [to youtube](https://www.youtube.com/@bootdotdev)"
     print(extract_markdown_images(image_text))
-    print(extract_markdown_links(link_text))
+    print(extract_markdown_links(link_text), "\n\n")
+
+    print("Basic test for splitting nodes containing images\n")
+    image_node = TextNode("This is text with a ![rick roll](https://i.imgur.com/aKaOqIh.gif) and ![obi wan](https://i.imgur.com/fJRm4Vk.jpeg)", TextType.TEXT)
+    split_nodes = split_nodes_images([image_node], TextType.IMAGE)
+    for node in split_nodes:
+        print(node)
+    print("\n\n")
+
+    #print("Basic test for splitting nodes containing links\n")
+    #link_node = TextNode("This is text with a link [to boot dev](https://www.boot.dev) and [to youtube](https://www.youtube.com/@bootdotdev)", TextType.TEXT)
+    #split_nodes = split_nodes_links([link_node], TextType.LINK)
+    #for node in split_nodes:
+        #print(node)
+    #print("\n\n")
 
 main()
