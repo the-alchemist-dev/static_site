@@ -26,7 +26,7 @@ def split_nodes_delimiter(old_nodes, delimiter, text_type):
                         new_nodes.append(TextNode(text_item, text_type))
     return new_nodes
 
-def split_nodes_images(old_nodes, text_type):
+def split_nodes_images(old_nodes, text_type=TextType.IMAGE):
     valid_text_types = [TextType.IMAGE]
     if text_type not in valid_text_types:
         raise ValueError(f"Invalid text_type value, must be {valid_text_types}")
@@ -45,14 +45,14 @@ def split_nodes_images(old_nodes, text_type):
                     if left_split != "" and right_split != "":
                         new_nodes.append(TextNode(left_split, TextType.TEXT))
                         new_nodes.append(TextNode(image_alt, TextType.IMAGE, image_src))
-                        image_check = extract_markdown_links(right_split)
+                        image_check = extract_markdown_images(right_split)
                         if image_check == []:
                             new_nodes.append(TextNode(right_split, TextType.TEXT))
                         else:
                             working_text = right_split
                     elif left_split == "" and right_split != "":
                         new_nodes.append(TextNode(image_alt, TextType.IMAGE, image_src))
-                        image_check = extract_markdown_links(right_split)
+                        image_check = extract_markdown_images(right_split)
                         if image_check == []:
                             new_nodes.append(TextNode(right_split, TextType.TEXT))
                         else:
@@ -65,7 +65,7 @@ def split_nodes_images(old_nodes, text_type):
             new_nodes.append(node)
     return new_nodes
 
-def split_nodes_links(old_nodes, text_type):
+def split_nodes_links(old_nodes, text_type=TextType.LINK):
     valid_text_types = [TextType.LINK]
     if text_type not in valid_text_types:
         raise ValueError(f"Invalid text_type value, must be {valid_text_types}")
