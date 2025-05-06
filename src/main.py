@@ -1,10 +1,8 @@
 #!/usr/bin/python3
 
 from textnode import *
-from htmlnode import HTMLNode
-from htmlnode import LeafNode
-from htmlnode import ParentNode
-from extractnodes import *
+from htmlnode import *
+from splitnodes import *
 
 
 def main():

@@ -2,9 +2,21 @@
 
 import unittest
 from textnode import TextNode, TextType
-from extractnodes import *
+from splitnodes import *
 
 class TestSplitNodes(unittest.TestCase):
+
+    def test_split_no_formats(self):
+        nodes = [
+            TextNode("This is actually just text", TextType.TEXT),
+            TextNode("This is also just text", TextType.TEXT)
+        ]
+        #delimiter and text_type don't actually matter here, just need for function call
+        new_nodes = split_nodes_delimiter(nodes, "**", TextType.BOLD)
+        assert new_nodes == [
+            TextNode("This is actually just text", TextType.TEXT),
+            TextNode("This is also just text", TextType.TEXT)
+        ]
 
     def test_split_bold(self):
         nodes = [
