@@ -196,7 +196,7 @@ class TestSplitNodes(unittest.TestCase):
         except Exception as e:
             assert False, f"split_nodes_delimiter() raise {type(e).__name__} instead of ValueError"
 
-    def test_split_images(self):
+    def test_split_images_text_at_end(self):
         nodes = [
             TextNode("This is text with a ![rick roll](https://i.imgur.com/aKaOqIh.gif) and ![obi wan](https://i.imgur.com/fJRm4Vk.jpeg) and more", TextType.TEXT)
         ]
@@ -208,6 +208,51 @@ class TestSplitNodes(unittest.TestCase):
             TextNode("obi wan", TextType.IMAGE, "https://i.imgur.com/fJRm4Vk.jpeg"),
             TextNode(" and more", TextType.TEXT, None)
         ]
+
+    def test_split_images_no_text_at_end(self):
+        nodes = [
+            TextNode("This is text with a ![rick roll](https://i.imgur.com/aKaOqIh.gif) and ![obi wan](https://i.imgur.com/fJRm4Vk.jpeg)", TextType.TEXT)
+        ]
+        new_nodes = split_nodes_images(nodes, TextType.IMAGE)
+        assert new_nodes == [
+            TextNode("This is text with a ", TextType.TEXT, None),
+            TextNode("rick roll", TextType.IMAGE, "https://i.imgur.com/aKaOqIh.gif"),
+            TextNode(" and ", TextType.TEXT, None),
+            TextNode("obi wan", TextType.IMAGE, "https://i.imgur.com/fJRm4Vk.jpeg")
+        ]
+
+    def test_split_images_no_text_or_space_between(self):
+        nodes = [
+            TextNode("This is text with a ![rick roll](https://i.imgur.com/aKaOqIh.gif)![obi wan](https://i.imgur.com/fJRm4Vk.jpeg) and more", TextType.TEXT)
+        ]
+        new_nodes = split_nodes_images(nodes, TextType.IMAGE)
+        assert new_nodes == [
+            TextNode("This is text with a ", TextType.TEXT, None),
+            TextNode("rick roll", TextType.IMAGE, "https://i.imgur.com/aKaOqIh.gif"),
+            TextNode("obi wan", TextType.IMAGE, "https://i.imgur.com/fJRm4Vk.jpeg"),
+            TextNode(" and more", TextType.TEXT, None)
+        ]
+
+    def test_split_images_no_text_except_space(self):
+        nodes = [
+            TextNode("![rick roll](https://i.imgur.com/aKaOqIh.gif) ![obi wan](https://i.imgur.com/fJRm4Vk.jpeg)", TextType.TEXT)
+        ]
+        new_nodes = split_nodes_images(nodes, TextType.IMAGE)
+        assert new_nodes == [
+            TextNode("rick roll", TextType.IMAGE, "https://i.imgur.com/aKaOqIh.gif"),
+            TextNode(" ", TextType.TEXT, None),
+            TextNode("obi wan", TextType.IMAGE, "https://i.imgur.com/fJRm4Vk.jpeg")
+        ]
+
+    def test_split_images_no_text_no_space(self):
+        nodes = [
+            TextNode("![rick roll](https://i.imgur.com/aKaOqIh.gif)![obi wan](https://i.imgur.com/fJRm4Vk.jpeg)", TextType.TEXT)
+        ]
+        new_nodes = split_nodes_images(nodes, TextType.IMAGE)
+        assert new_nodes == [
+            TextNode("rick roll", TextType.IMAGE, "https://i.imgur.com/aKaOqIh.gif"),
+            TextNode("obi wan", TextType.IMAGE, "https://i.imgur.com/fJRm4Vk.jpeg")
+        ]        
 
     def test_split_images_wrong_text_type(self):
         try:
@@ -260,7 +305,7 @@ class TestSplitNodes(unittest.TestCase):
             TextNode("This is text with a [rick roll](https://i.imgur.com/aKaOqIh.gif and ![obi wanhttps://i.imgur.com/fJRm4Vk.jpeg) and more", TextType.TEXT, None)
         ]
 
-    def test_split_links(self):
+    def test_split_links_text_at_end(self):
         nodes = [
             TextNode("This is text with a link [to boot dev](https://www.boot.dev) and [to youtube](https://www.youtube.com/@bootdotdev) and more", TextType.TEXT)
         ]
@@ -271,6 +316,51 @@ class TestSplitNodes(unittest.TestCase):
 			TextNode(" and ", TextType.TEXT, None),
 			TextNode("to youtube", TextType.LINK, "https://www.youtube.com/@bootdotdev"),
 			TextNode(" and more", TextType.TEXT, None)
+        ]
+
+    def test_split_links_no_text_at_end(self):
+        nodes = [
+            TextNode("This is text with a link [to boot dev](https://www.boot.dev) and [to youtube](https://www.youtube.com/@bootdotdev)", TextType.TEXT)
+        ]
+        new_nodes = split_nodes_links(nodes, TextType.LINK)
+        assert new_nodes == [
+			TextNode("This is text with a link ", TextType.TEXT, None),
+			TextNode("to boot dev", TextType.LINK, "https://www.boot.dev"),
+			TextNode(" and ", TextType.TEXT, None),
+			TextNode("to youtube", TextType.LINK, "https://www.youtube.com/@bootdotdev")
+        ]
+
+    def test_split_links_no_text_or_space_between(self):
+        nodes = [
+            TextNode("This is text with a link [to boot dev](https://www.boot.dev)[to youtube](https://www.youtube.com/@bootdotdev) and more", TextType.TEXT)
+        ]
+        new_nodes = split_nodes_links(nodes, TextType.LINK)
+        assert new_nodes == [
+			TextNode("This is text with a link ", TextType.TEXT, None),
+			TextNode("to boot dev", TextType.LINK, "https://www.boot.dev"),
+			TextNode("to youtube", TextType.LINK, "https://www.youtube.com/@bootdotdev"),
+			TextNode(" and more", TextType.TEXT, None)
+        ]
+
+    def test_split_links_no_text_except_space(self):
+        nodes = [
+            TextNode("[to boot dev](https://www.boot.dev) [to youtube](https://www.youtube.com/@bootdotdev)", TextType.TEXT)
+        ]
+        new_nodes = split_nodes_links(nodes, TextType.LINK)
+        assert new_nodes == [
+			TextNode("to boot dev", TextType.LINK, "https://www.boot.dev"),
+			TextNode(" ", TextType.TEXT, None),
+			TextNode("to youtube", TextType.LINK, "https://www.youtube.com/@bootdotdev")
+        ]
+
+    def test_split_links_no_text_no_space(self):
+        nodes = [
+            TextNode("[to boot dev](https://www.boot.dev)[to youtube](https://www.youtube.com/@bootdotdev)", TextType.TEXT)
+        ]
+        new_nodes = split_nodes_links(nodes, TextType.LINK)
+        assert new_nodes == [
+			TextNode("to boot dev", TextType.LINK, "https://www.boot.dev"),
+			TextNode("to youtube", TextType.LINK, "https://www.youtube.com/@bootdotdev")
         ]
 
     def test_split_links_wrong_text_type(self):
