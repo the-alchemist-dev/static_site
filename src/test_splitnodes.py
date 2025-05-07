@@ -439,3 +439,86 @@ class TestSplitNodes(unittest.TestCase):
         #bad syntax shouldn't cause errors, the pattern just won't match
         text = text = "This is text with a link to boot dev](https://www.boot.dev and [to youtubehttps://www.youtube.com/@bootdotdev)"
         assert extract_markdown_links(text) == []
+
+    def test_text_to_textnodes_bold_only(self):
+        text = "This is **text** with an italic word and a code block and an obi wan image https://i.imgur.com/fJRm4Vk.jpeg and a link https://boot.dev"
+        nodes = text_to_textnodes(text)
+        assert nodes == [
+            TextNode("This is ", TextType.TEXT, None),
+            TextNode("text", TextType.BOLD, None),
+            TextNode(" with an italic word and a code block and an obi wan image https://i.imgur.com/fJRm4Vk.jpeg and a link https://boot.dev", TextType.TEXT, None)
+        ]
+
+    def test_text_to_textnodes_italic_only(self):
+        text = "This is text with an _italic_ word and a code block and an obi wan image https://i.imgur.com/fJRm4Vk.jpeg and a link https://boot.dev"
+        nodes = text_to_textnodes(text)
+        assert nodes == [
+            TextNode("This is text with an ", TextType.TEXT, None),
+            TextNode("italic", TextType.ITALIC, None),
+            TextNode(" word and a code block and an obi wan image https://i.imgur.com/fJRm4Vk.jpeg and a link https://boot.dev", TextType.TEXT, None)
+        ]
+
+    def test_text_to_textnodes_code_only(self):
+        text = "This is text with an italic word and a `code block` and an obi wan image https://i.imgur.com/fJRm4Vk.jpeg and a link https://boot.dev"
+        nodes = text_to_textnodes(text)
+        assert nodes == [
+            TextNode("This is text with an italic word and a ", TextType.TEXT, None),
+            TextNode("code block", TextType.CODE, None),
+            TextNode(" and an obi wan image https://i.imgur.com/fJRm4Vk.jpeg and a link https://boot.dev", TextType.TEXT, None)
+        ]
+        
+    def test_text_to_textnodes_image_only(self):
+        text = "This is text with an italic word and a code block and an ![obi wan image](https://i.imgur.com/fJRm4Vk.jpeg) and a link https://boot.dev"
+        nodes = text_to_textnodes(text)
+        assert nodes == [
+            TextNode("This is text with an italic word and a code block and an ", TextType.TEXT, None),
+            TextNode("obi wan image", TextType.IMAGE, "https://i.imgur.com/fJRm4Vk.jpeg"),
+            TextNode(" and a link https://boot.dev")
+        ]
+        
+    def test_text_to_textnodes_link_only(self):
+        text = "This is text with an italic word and a code block and an obi wan image https://i.imgur.com/fJRm4Vk.jpeg and a [link](https://boot.dev)"
+        nodes = text_to_textnodes(text)
+        assert nodes == [
+            TextNode("This is text with an italic word and a code block and an obi wan image https://i.imgur.com/fJRm4Vk.jpeg and a ", TextType.TEXT, None),
+            TextNode("link", TextType.LINK, "https://boot.dev")
+        ]
+        
+    def test_text_to_textnodes_text_formats(self):
+        text = "This is **text** with an _italic_ word and a `code block` and an obi wan image https://i.imgur.com/fJRm4Vk.jpeg and a link https://boot.dev"
+        nodes = text_to_textnodes(text)
+        assert nodes == [
+            TextNode("This is ", TextType.TEXT, None),
+            TextNode("text", TextType.BOLD, None),
+            TextNode(" with an ", TextType.TEXT, None),
+            TextNode("italic", TextType.ITALIC, None),
+            TextNode(" word and a ", TextType.TEXT, None),
+            TextNode("code block", TextType.CODE, None),
+            TextNode(" and an obi wan image https://i.imgur.com/fJRm4Vk.jpeg and a link https://boot.dev", TextType.TEXT, None)
+        ]
+        
+    def test_text_to_textnodes_image_and_link(self):
+        text = "This is text with an italic word and a code block and an ![obi wan image](https://i.imgur.com/fJRm4Vk.jpeg) and a [link](https://boot.dev)"
+        nodes = text_to_textnodes(text)
+        assert nodes == [
+            TextNode("This is text with an italic word and a code block and an ", TextType.TEXT, None),
+            TextNode("obi wan image", TextType.IMAGE, "https://i.imgur.com/fJRm4Vk.jpeg"),
+            TextNode(" and a ", TextType.TEXT, None),
+            TextNode("link", TextType.LINK, "https://boot.dev")
+        ]
+                
+    def test_text_to_textnodes_all(self):
+        text = "This is **text** with an _italic_ word and a `code block` and an ![obi wan image](https://i.imgur.com/fJRm4Vk.jpeg) and a [link](https://boot.dev)"
+        nodes = text_to_textnodes(text)
+        assert nodes == [
+            TextNode("This is ", TextType.TEXT, None),
+            TextNode("text", TextType.BOLD, None),
+            TextNode(" with an ", TextType.TEXT, None),
+            TextNode("italic", TextType.ITALIC, None),
+            TextNode(" word and a ", TextType.TEXT, None),
+            TextNode("code block", TextType.CODE, None),
+            TextNode(" and an ", TextType.TEXT, None),
+            TextNode("obi wan image", TextType.IMAGE, "https://i.imgur.com/fJRm4Vk.jpeg"),
+            TextNode(" and a ", TextType.TEXT, None),
+            TextNode("link", TextType.LINK, "https://boot.dev")
+        ]

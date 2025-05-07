@@ -65,7 +65,7 @@ def split_nodes_images(old_nodes, text_type=TextType.IMAGE):
                     else:
                         new_nodes.append(TextNode(image_alt, TextType.IMAGE, image_src))
             else:
-                new_nodes.append(TextNode(node.text, TextType.TEXT))
+                new_nodes.append(node)
         else:
             new_nodes.append(node)
     return new_nodes
@@ -107,7 +107,7 @@ def split_nodes_links(old_nodes, text_type=TextType.LINK):
                     else:
                         new_nodes.append(TextNode(link_text, TextType.LINK, link_url))
             else:
-                new_nodes.append(TextNode(node.text, TextType.TEXT))
+                new_nodes.append(node)
         else:
             new_nodes.append(node)
     return new_nodes
