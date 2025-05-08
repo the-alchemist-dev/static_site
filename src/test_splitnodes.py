@@ -8,7 +8,9 @@ from textnode import (
 from splitnodes import (
     split_nodes_delimiter,
     split_nodes_images,
-    split_nodes_links
+    split_nodes_links,
+    extract_markdown_images,
+    extract_markdown_links
 )
 
 class TestSplitNodes(unittest.TestCase):
