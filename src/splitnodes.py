@@ -119,12 +119,3 @@ def extract_markdown_images(text):
 def extract_markdown_links(text):
     links = re.findall(r"(?<!!)\[([^\[\]]*)\]\(([^\(\)]*)\)", text)
     return links
-
-def text_to_textnodes(text):
-    original_node = TextNode(text, TextType.TEXT, None)
-    bold_split = split_nodes_delimiter([original_node], "**", TextType.BOLD)
-    italic_split = split_nodes_delimiter(bold_split, "_", TextType.ITALIC)
-    code_split = split_nodes_delimiter(italic_split, "`", TextType.CODE)
-    image_split = split_nodes_images(code_split)
-    link_split = split_nodes_links(image_split)
-    return link_split

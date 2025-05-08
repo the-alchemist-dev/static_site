@@ -1,7 +1,24 @@
 #!/usr/bin/python3
 
 from htmlnode import LeafNode
-from textnode import TextType
+from textnode import (
+    TextNode,
+    TextType
+)
+from splitnodes import (
+    split_nodes_delimiter,
+    split_nodes_images,
+    split_nodes_links
+)
+
+def text_to_textnodes(text):
+    original_node = TextNode(text, TextType.TEXT, None)
+    bold_split = split_nodes_delimiter([original_node], "**", TextType.BOLD)
+    italic_split = split_nodes_delimiter(bold_split, "_", TextType.ITALIC)
+    code_split = split_nodes_delimiter(italic_split, "`", TextType.CODE)
+    image_split = split_nodes_images(code_split)
+    link_split = split_nodes_links(image_split)
+    return link_split
 
 def text_node_to_html_node(text_node):
     if text_node.text == None:

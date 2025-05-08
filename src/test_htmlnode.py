@@ -25,3 +25,6 @@ class TestHTMLNode(unittest.TestCase):
 	def test_repr(self):
 		node = HTMLNode(tag="h1", value="This is a header")
 		assert node.__repr__() == "HTMLNode(h1, This is a header, None, None)"
+
+if __name__ == "__main__":
+    unittest.main()

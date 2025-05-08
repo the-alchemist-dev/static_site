@@ -56,3 +56,6 @@ class TestParentNode(unittest.TestCase):
 	def test_repr(self):
 	    parent_node = ParentNode("div", [LeafNode("p", "Text")])
 	    assert parent_node.__repr__() == "ParentNode(div, [LeafNode(p, Text, None, None)], None)"
+
+if __name__ == "__main__":
+    unittest.main()

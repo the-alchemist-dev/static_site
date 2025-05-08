@@ -33,3 +33,6 @@ class TestLeafNode(unittest.TestCase):
     def test_repr(self):
         node = LeafNode("h1", "Header 1")
         assert node.__repr__() == "LeafNode(h1, Header 1, None, None)"
+
+if __name__ == "__main__":
+    unittest.main()
