@@ -7,7 +7,8 @@ from textnode import (
 )
 from conversions import (
     text_to_textnodes,
-    text_node_to_html_node
+    text_node_to_html_node,
+    markdown_to_blocks
 )
 
 class TestConversions(unittest.TestCase):
@@ -137,6 +138,87 @@ class TestConversions(unittest.TestCase):
             TextNode(" and a ", TextType.TEXT, None),
             TextNode("link", TextType.LINK, "https://boot.dev")
         ]
+
+    def test_markdown_to_blocks_one_line(self):
+    	md = """
+This is **bolded** paragraph
+
+This is another paragraph with _italic_ text and `code` here
+This is the same paragraph on a new line
+
+- This is a list
+- with items
+"""
+    	blocks = markdown_to_blocks(md)
+    	assert blocks == [
+    		"This is **bolded** paragraph",
+    		"This is another paragraph with _italic_ text and `code` here\nThis is the same paragraph on a new line",
+    		"- This is a list\n- with items"
+    	]
+    
+    def test_markdown_to_blocks_two_lines(self):
+    	md = """
+This is **bolded** paragraph
+
+
+This is another paragraph with _italic_ text and `code` here
+This is the same paragraph on a new line
+
+
+- This is a list
+- with items
+"""
+    	blocks = markdown_to_blocks(md)
+    	assert blocks == [
+    		"This is **bolded** paragraph",
+    		"This is another paragraph with _italic_ text and `code` here\nThis is the same paragraph on a new line",
+    		"- This is a list\n- with items"
+    	]
+    
+    def test_markdown_to_blocks_no_lines(self):
+    	md = """
+This is **bolded** paragraph
+This is another paragraph with _italic_ text and `code` here
+This is the same paragraph on a new line
+- This is a list
+- with items
+"""
+    	blocks = markdown_to_blocks(md)
+    	assert blocks == [
+    		"This is **bolded** paragraph\nThis is another paragraph with _italic_ text and `code` here\nThis is the same paragraph on a new line\n- This is a list\n- with items"
+    	]
+    
+    def test_markdown_to_blocks_many_extra_lines(self):
+    	md = """
+
+
+
+This is **bolded** paragraph
+
+
+
+
+
+This is another paragraph with _italic_ text and `code` here
+This is the same paragraph on a new line
+
+
+
+
+
+- This is a list
+- with items
+
+
+
+"""
+    	blocks = markdown_to_blocks(md)
+    	assert blocks == [
+    		"This is **bolded** paragraph",
+    		"This is another paragraph with _italic_ text and `code` here\nThis is the same paragraph on a new line",
+    		"- This is a list\n- with items"
+    	]
+    
 
 if __name__ == "__main__":
     unittest.main()

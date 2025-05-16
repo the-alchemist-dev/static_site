@@ -38,3 +38,12 @@ def text_node_to_html_node(text_node):
             return LeafNode("img", "", {"src": text_node.url, "alt": text_node.text})
         case _:
             raise Exception("invalid text type")
+
+def markdown_to_blocks(markdown):
+    md_lines = markdown.split("\n\n")
+    blocks = []
+    for block in md_lines:
+        stripped_block = block.strip()
+        if stripped_block != "":
+            blocks.append(stripped_block)
+    return blocks
