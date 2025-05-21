@@ -2,14 +2,14 @@
 
 __all__ = [
     "conversions",
-    "enumclasses",
+    "enumerations",
     "htmlnode",
-    "splitnodes",
+    "splits",
     "textnode"
 ]
 
 from . import conversions
-from . import enumclasses
+from . import enumerations
 from . import htmlnode
-from . import splitnodes
+from . import splits
 from . import textnode

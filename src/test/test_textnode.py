@@ -2,7 +2,7 @@
 
 import unittest
 from site_generator.textnode import TextNode
-from site_generator.enumclasses import TextType
+from site_generator.enumerations import TextType
 
 
 class TestTextNode(unittest.TestCase):

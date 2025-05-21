@@ -2,7 +2,7 @@
 
 import re
 from .textnode import TextNode
-from .enumclasses import TextType
+from .enumerations import TextType
 
 def split_nodes_delimiter(old_nodes, delimiter, text_type):
     valid_delimiters = ["**", "`", "_"]

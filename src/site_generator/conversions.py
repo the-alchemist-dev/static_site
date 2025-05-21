@@ -2,8 +2,8 @@
 
 from .htmlnode import LeafNode
 from .textnode import TextNode
-from .enumclasses import TextType
-from .splitnodes import (
+from .enumerations import TextType
+from .splits import (
     split_nodes_delimiter,
     split_nodes_images,
     split_nodes_links
@@ -20,7 +20,7 @@ def text_to_textnodes(text):
 
 def text_node_to_html_node(text_node):
     if text_node.text == None:
-        raise Exception("Text value cannot be None")
+        raise ValueError("Text value cannot be None")
     match text_node.text_type:
         case TextType.TEXT:
             return LeafNode(None, text_node.text)
@@ -45,3 +45,7 @@ def markdown_to_blocks(markdown):
         if stripped_block != "":
             blocks.append(stripped_block)
     return blocks
+
+def block_to_block_type(block):
+    if block == None:
+        raise ValueError("block value cannot be None")

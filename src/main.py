@@ -1,9 +1,9 @@
 #!/usr/bin/python3
 
 from site_generator.conversions import *
-from site_generator.enumclasses import *
+from site_generator.enumerations import *
 from site_generator.htmlnode import *
-from site_generator.splitnodes import *
+from site_generator.splits import *
 from site_generator.textnode import *
 
 

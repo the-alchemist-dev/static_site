@@ -2,8 +2,8 @@
 
 import unittest
 from site_generator.textnode import TextNode
-from site_generator.enumclasses import TextType
-from site_generator.splitnodes import (
+from site_generator.enumerations import TextType
+from site_generator.splits import (
     split_nodes_delimiter,
     split_nodes_images,
     split_nodes_links,
