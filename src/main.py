@@ -3,6 +3,7 @@
 from textnode import *
 from htmlnode import *
 from splitnodes import *
+from conversions import *
 
 
 def main():
