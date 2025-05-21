@@ -261,7 +261,7 @@ class TestSplitNodes(unittest.TestCase):
         assert new_nodes == [
             TextNode("rick roll", TextType.IMAGE, "https://i.imgur.com/aKaOqIh.gif"),
             TextNode("obi wan", TextType.IMAGE, "https://i.imgur.com/fJRm4Vk.jpeg")
-        ]        
+        ]
 
     def test_split_images_wrong_text_type(self):
         try:
@@ -448,6 +448,83 @@ class TestSplitNodes(unittest.TestCase):
         #bad syntax shouldn't cause errors, the pattern just won't match
         text = text = "This is text with a link to boot dev](https://www.boot.dev and [to youtubehttps://www.youtube.com/@bootdotdev)"
         assert extract_markdown_links(text) == []
+
+
+
+
+
+
+    def test_split_nested_formatting(self):
+        nodes = [TextNode("**bold and _italic_**", TextType.TEXT)]
+        # Should only split outermost bold, not inner italic
+        result = split_nodes_delimiter(nodes, "**", TextType.BOLD)
+        assert result == [
+            TextNode("bold and _italic_", TextType.BOLD)
+        ]
+
+    def test_split_escaped_delimiters(self):
+        nodes = [TextNode(r"\*\*not bold\*\*", TextType.TEXT)]
+        # Escaped delimiters should not be treated as formatting
+        result = split_nodes_delimiter(nodes, "**", TextType.BOLD)
+        assert result == [
+            TextNode(r"\*\*not bold\*\*", TextType.TEXT)
+        ]
+
+    def test_split_delimiter_at_boundaries(self):
+        nodes = [TextNode("**bold**text**more**", TextType.TEXT)]
+        result = split_nodes_delimiter(nodes, "**", TextType.BOLD)
+        assert result == [
+            TextNode("bold", TextType.BOLD),
+            TextNode("text", TextType.TEXT),
+            TextNode("more", TextType.BOLD)
+        ]
+
+    def test_split_empty_string(self):
+        nodes = [TextNode("", TextType.TEXT)]
+        result = split_nodes_delimiter(nodes, "**", TextType.BOLD)
+        assert result == [
+            TextNode("", TextType.TEXT)
+        ]
+
+    def test_split_whitespace_only(self):
+        nodes = [TextNode("   ", TextType.TEXT)]
+        result = split_nodes_delimiter(nodes, "**", TextType.BOLD)
+        assert result == [
+            TextNode("   ", TextType.TEXT)
+        ]
+
+    def test_split_multiple_delimiters_sequence(self):
+        nodes = [TextNode("**bold**_italic_", TextType.TEXT)]
+        result = split_nodes_delimiter(nodes, "**", TextType.BOLD)
+        # Only bold is split, italic remains in text
+        assert result == [
+            TextNode("bold", TextType.BOLD),
+            TextNode("_italic_", TextType.TEXT)
+        ]
+
+    def test_split_malformed_overlapping_markdown(self):
+        # Overlapping delimiters, should treat as plain text
+        nodes = [TextNode("**bold _italic** text_", TextType.TEXT)]
+        result = split_nodes_delimiter(nodes, "**", TextType.BOLD)
+        assert result == [
+            TextNode("bold _italic", TextType.BOLD),
+            TextNode(" text_", TextType.TEXT)
+        ]
+
+    def test_extract_markdown_images_empty_alt(self):
+        images = extract_markdown_images("![](url)")
+        assert images == [("", "url")]
+
+    def test_extract_markdown_links_empty_text(self):
+        links = extract_markdown_links("[](url)")
+        assert links == [("", "url")]
+
+    def test_extract_markdown_links_empty_url(self):
+        links = extract_markdown_links("[text]()")
+        assert links == [("text", "")]
+
+
+
 
 if __name__ == "__main__":
     unittest.main()

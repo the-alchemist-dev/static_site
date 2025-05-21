@@ -16,14 +16,24 @@ def split_nodes_delimiter(old_nodes, delimiter, text_type):
             new_nodes.append(node)
         elif delimiter in node.text:
             split_text = node.text.split(delimiter)
-            if len(split_text) % 2 == 0:
-                raise ValueError("Invalid markdown syntax: must have opening and closing flags")
-            for index, text_item in enumerate(split_text):
+            i = 0
+            while i < len(split_text):
+                text_item = split_text[i]
                 if text_item != "":
-                    if index % 2 == 0:
-                        new_nodes.append(TextNode(text_item, TextType.TEXT))
+                    # Even index: plain text
+                    new_nodes.append(TextNode(text_item, TextType.TEXT))
+                i += 1
+                # If there's a next item, it's a candidate for markdown
+                if i < len(split_text):
+                    # If this is the last item and there's no closing delimiter, treat as plain text with delimiter
+                    if i == len(split_text) - 1:
+                        unmatched = delimiter + split_text[i]
+                        if split_text[i] != "":
+                            new_nodes.append(TextNode(unmatched, TextType.TEXT))
                     else:
-                        new_nodes.append(TextNode(text_item, text_type))
+                        if split_text[i] != "":
+                            new_nodes.append(TextNode(split_text[i], text_type))
+                    i += 1
         else:
             new_nodes.append(node)
     return new_nodes
