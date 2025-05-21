@@ -11,4 +11,9 @@ class TextType(Enum):
     IMAGE = "image"
 
 class BlockType(Enum):
-    pass
+    PG = "paragraph"
+    HEAD = "header"
+    CODE = "code"
+    QUOTE = "link"
+    UL = "unordered list"
+    OL = "ordered list"
