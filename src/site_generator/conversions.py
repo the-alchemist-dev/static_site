@@ -1,11 +1,9 @@
 #!/usr/bin/python3
 
-from htmlnode import LeafNode
-from textnode import (
-    TextNode,
-    TextType
-)
-from splitnodes import (
+from .htmlnode import LeafNode
+from .textnode import TextNode
+from .enumclasses import TextType
+from .splitnodes import (
     split_nodes_delimiter,
     split_nodes_images,
     split_nodes_links

@@ -1,11 +1,9 @@
 #!/usr/bin/python3
 
 import unittest
-from textnode import (
-    TextNode,
-    TextType
-)
-from conversions import (
+from site_generator.textnode import TextNode
+from site_generator.enumclasses import TextType
+from site_generator.conversions import (
     text_to_textnodes,
     text_node_to_html_node,
     markdown_to_blocks

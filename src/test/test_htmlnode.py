@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 
 import unittest
-from htmlnode import HTMLNode
+from site_generator.htmlnode import HTMLNode
 
 class TestHTMLNode(unittest.TestCase):
 	def test_to_html(self):
@@ -17,7 +17,7 @@ class TestHTMLNode(unittest.TestCase):
 	def test_props_to_html_single(self):
 		node = HTMLNode(props={"href": "https://www.boot.dev"})
 		assert node.props_to_html() == ' href="https://www.boot.dev"'
-	
+
 	def test_props_to_html_multiple(self):
 		node = HTMLNode(props={"href": "https://www.boot.dev", "target": "_blank"})
 		assert node.props_to_html() == ' href="https://www.boot.dev" target="_blank"'

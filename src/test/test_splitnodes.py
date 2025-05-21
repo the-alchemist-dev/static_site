@@ -1,11 +1,9 @@
 #!/usr/bin/python3
 
 import unittest
-from textnode import (
-    TextNode,
-    TextType
-)
-from splitnodes import (
+from site_generator.textnode import TextNode
+from site_generator.enumclasses import TextType
+from site_generator.splitnodes import (
     split_nodes_delimiter,
     split_nodes_images,
     split_nodes_links,

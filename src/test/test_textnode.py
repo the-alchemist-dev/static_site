@@ -1,7 +1,8 @@
 #!/usr/bin/python3
 
 import unittest
-from textnode import TextNode, TextType
+from site_generator.textnode import TextNode
+from site_generator.enumclasses import TextType
 
 
 class TestTextNode(unittest.TestCase):
@@ -19,7 +20,7 @@ class TestTextNode(unittest.TestCase):
         node = TextNode("This is some text", TextType.TEXT, "https://www.boot.dev")
         node2 = TextNode("This is some text", TextType.TEXT, "https://www.boot.dev")
         assert node == node2
-        
+
     def test_url_not_eq(self):
         node = TextNode("This is some text", TextType.ITALIC, "https://www.boot.dev")
         node2 = TextNode("This is some text", TextType.ITALIC, "https://www.boot.com")

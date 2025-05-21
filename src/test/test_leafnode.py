@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 
 import unittest
-from htmlnode import LeafNode
+from site_generator.htmlnode import LeafNode
 
 class TestLeafNode(unittest.TestCase):
     def test_to_html(self):

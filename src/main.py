@@ -1,9 +1,10 @@
 #!/usr/bin/python3
 
-from textnode import *
-from htmlnode import *
-from splitnodes import *
-from conversions import *
+from site_generator.conversions import *
+from site_generator.enumclasses import *
+from site_generator.htmlnode import *
+from site_generator.splitnodes import *
+from site_generator.textnode import *
 
 
 def main():
