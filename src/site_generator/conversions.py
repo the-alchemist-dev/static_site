@@ -53,8 +53,30 @@ def markdown_to_blocks(markdown):
 def block_to_block_type(block):
     if block == None:
         raise ValueError("block value cannot be None")
+
     heading_values = ("# ", "## ", "### ", "#### ", "##### ", "###### ")
     if block.startswith(heading_values):
         return BlockType.HEAD
+
     if block.startswith("```") and block.endswith("```"):
         return BlockType.CODE
+
+    if block.startswith(">"):
+        block_lines = block.split("\n")
+        is_quote = True
+        for line in block_lines:
+            if not line.startswith(">"):
+                is_quote = False
+        if is_quote == False:
+            return BlockType.PG
+        return BlockType.QUOTE
+
+    if block.startswith("- "):
+        block_lines = block.split("\n")
+        is_unord_list = True
+        for line in block_lines:
+            if not line.startswith("- "):
+                is_unord_list = False
+        if is_unord_list == False:
+            return BlockType.PG
+        return BlockType.QUOTE
