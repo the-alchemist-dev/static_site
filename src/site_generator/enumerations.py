@@ -14,6 +14,6 @@ class BlockType(Enum):
     PG = "paragraph"
     HEAD = "header"
     CODE = "code"
-    QUOTE = "link"
+    QUOTE = "quote"
     UL = "unordered list"
     OL = "ordered list"
