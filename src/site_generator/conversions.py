@@ -2,8 +2,12 @@
 
 from .htmlnode import LeafNode
 from .textnode import TextNode
-from .enumerations import TextType
+from .enumerations import (
+    TextType,
+    BlockType
+)
 from .splits import (
+
     split_nodes_delimiter,
     split_nodes_images,
     split_nodes_links
@@ -49,3 +53,8 @@ def markdown_to_blocks(markdown):
 def block_to_block_type(block):
     if block == None:
         raise ValueError("block value cannot be None")
+    heading_values = ("# ", "## ", "### ", "#### ", "##### ", "###### ")
+    if block.startswith(heading_values):
+        return BlockType.HEAD
+    if block.startswith("```") and block.endswith("```"):
+        return BlockType.CODE
