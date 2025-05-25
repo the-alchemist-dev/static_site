@@ -258,5 +258,24 @@ This is the same paragraph on a new line
         blocks = markdown_to_blocks(md)
         assert blocks == ["Just a single block"]
 
+
+# this is where tests for block_to_blocktype() will be as soon as it's fully written
+# there will be more of them than below -- these are just placeholders for parts that need testing
+    def test_block_to_blocktype_header(self):
+        pass
+
+    def test_block_to_blocktype_code(self):
+        pass
+
+    def test_block_to_blocktype_quote(self):
+        pass
+
+    def test_block_to_blocktype_unord_list(self):
+        pass
+
+    def test_block_to_blocktype_ord_list(self):
+        pass
+
+
 if __name__ == "__main__":
     unittest.main()
