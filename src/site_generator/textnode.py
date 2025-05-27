@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 
-from .enumclasses import TextType
+from .enumerations import TextType
 
 class TextNode():
     def __init__(self, text, text_type=TextType.TEXT, url=None):
