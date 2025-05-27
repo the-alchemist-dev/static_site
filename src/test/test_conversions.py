@@ -2,11 +2,15 @@
 
 import unittest
 from site_generator.textnode import TextNode
-from site_generator.enumerations import TextType
+from site_generator.enumerations import (
+    TextType,
+    BlockType
+)
 from site_generator.conversions import (
     text_to_textnodes,
     text_node_to_html_node,
-    markdown_to_blocks
+    markdown_to_blocks,
+    block_to_block_type
 )
 
 class TestConversions(unittest.TestCase):
@@ -258,22 +262,115 @@ This is the same paragraph on a new line
         blocks = markdown_to_blocks(md)
         assert blocks == ["Just a single block"]
 
+    def test_block_to_block_type_header_one_hash(self):
+        block = "# This is a header"
+        block_type = block_to_block_type(block)
+        assert block_type == BlockType.HEAD
 
-# this is where tests for block_to_blocktype() will be as soon as it's fully written
-# there will be more of them than below -- these are just placeholders for parts that need testing
-    def test_block_to_blocktype_header(self):
+    def test_block_to_block_type_header_two_hashes(self):
+        block = "## This is a header"
+        block_type = block_to_block_type(block)
+        assert block_type == BlockType.HEAD
+
+    def test_block_to_block_type_header_three_hashes(self):
+        block = "### This is a header"
+        block_type = block_to_block_type(block)
+        assert block_type == BlockType.HEAD
+
+    def test_block_to_block_type_header_four_hashes(self):
+        block = "#### This is a header"
+        block_type = block_to_block_type(block)
+        assert block_type == BlockType.HEAD
+
+    def test_block_to_block_type_header_five_hashes(self):
+        block = "##### This is a header"
+        block_type = block_to_block_type(block)
+        assert block_type == BlockType.HEAD
+
+    def test_block_to_block_type_header_six_hashes(self):
+        block = "###### This is a header"
+        block_type = block_to_block_type(block)
+        assert block_type == BlockType.HEAD
+
+    def test_block_to_block_type_header_leading_space(self):
+        block = " # This is invalid syntax for a header"
+        block_type = block_to_block_type(block)
+        assert block_type == BlockType.PG
+
+    def test_block_to_block_type_header_space_between_hashes(self):
+        block = "## ## This is actually valid syntax"
+        block_type = block_to_block_type(block)
+        assert block_type == BlockType.HEAD
+
+    def test_block_to_block_type_header_begins_with_num(self):
+        block = "1.# This is not gonna work"
+        block_type = block_to_block_type(block)
+        assert block_type == BlockType.PG
+
+    def test_block_to_block_type_code(self):
+        block = "```print('Hello World')```"
+        block_type = block_to_block_type(block)
+        assert block_type == BlockType.CODE
+
+    def test_block_to_block_type_code_leading_space(self):
+        block = " ```print('Hello World')```"
+        block_type = block_to_block_type(block)
+        assert block_type == BlockType.PG
+
+    def test_block_to_block_type_code_trailing_space(self):
+        block = "```print('Hello World')``` "
+        block_type = block_to_block_type(block)
+        assert block_type == BlockType.PG
+
+    def test_block_to_block_type_code_missing_leading_tick(self):
+        block = "``print('Hello World')```"
+        block_type = block_to_block_type(block)
+        assert block_type == BlockType.PG
+
+    def test_block_to_block_type_code_missing_trailing_tick(self):
+        block = "```print('Hello World')``"
+        block_type = block_to_block_type(block)
+        assert block_type == BlockType.PG
+
+    def test_block_to_block_type_code_no_start_ticks(self):
+        block = "print('Hello World')```"
+        block_type = block_to_block_type(block)
+        assert block_type == BlockType.PG
+
+    def test_block_to_block_type_code_no_end_ticks(self):
+        block = "```print('Hello World')"
+        block_type = block_to_block_type(block)
+        assert block_type == BlockType.PG
+
+    def test_block_to_block_type_quote_single_line(self):
+        block = ">This is a single-line quote."
+        block_type = block_to_block_type(block)
+        assert block_type == BlockType.QUOTE
+
+    def test_block_to_block_type_quote_multi_line(self):
+        block = ">This is a multi-line quote.\n>It has multiple lines."
+        block_type = block_to_block_type(block)
+        assert block_type == BlockType.QUOTE
+
+    def test_block_to_block_type_quote_mixed_lines(self):
+        block = ">This is a quote.\nThis is not a quote."
+        block_type = block_to_block_type(block)
+        assert block_type == BlockType.PG
+
+    def test_block_to_block_type_quote_leading_space(self):
+        block = " >This is a quote with leading space."
+        block_type = block_to_block_type(block)
+        assert block_type == BlockType.PG
+
+    def test_block_to_block_type_quote_trailing_space(self):
+        block = "> This is a quote with trailing space."
+        block_type = block_to_block_type(block)
+        assert block_type == BlockType.QUOTE
+
+    def test_block_to_block_type_unord_list(self):
         pass
 
-    def test_block_to_blocktype_code(self):
-        pass
-
-    def test_block_to_blocktype_quote(self):
-        pass
-
-    def test_block_to_blocktype_unord_list(self):
-        pass
-
-    def test_block_to_blocktype_ord_list(self):
+    def test_block_to_block_type_ord_list(self):
         pass
 
 

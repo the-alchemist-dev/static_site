@@ -63,20 +63,26 @@ def block_to_block_type(block):
 
     if block.startswith(">"):
         block_lines = block.split("\n")
-        is_quote = True
         for line in block_lines:
             if not line.startswith(">"):
-                is_quote = False
-        if is_quote == False:
-            return BlockType.PG
+                return BlockType.PG
         return BlockType.QUOTE
 
     if block.startswith("- "):
         block_lines = block.split("\n")
-        is_unord_list = True
         for line in block_lines:
             if not line.startswith("- "):
-                is_unord_list = False
-        if is_unord_list == False:
-            return BlockType.PG
-        return BlockType.QUOTE
+                return BlockType.PG
+        return BlockType.UL
+
+    if block.startswith("1. "):
+        block_lines = block.split("\n")
+        num_check = 0
+        for line in block_lines:
+            line_num = line[0]
+            if line_num - num_check != 1:
+                return BlockType.PG
+            num_check += 1
+        return BlockType.OL
+
+    return BlockType.PG
